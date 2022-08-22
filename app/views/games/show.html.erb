@@ -1,0 +1,33 @@
+<div data-controller="games" data-games-id-value="<%= @game.code %>">
+  <div class="columns is-centered">
+    <div class="column is-6">
+      <div class="card game h-100">
+        <div class="card-content h-100">
+          <div class="is-flex is-justify-content-center is-align-items-center h-100">
+            <div data-games-target="waiting" class="is-hidden">
+              <h3 class="title animate__animated animate__bounce">Wachten op je tegenstander...</h3>
+            </div>
+
+            <div data-games-target="buttons">
+              <button class="button is-link is-large mr-5" data-action="games#choose" data-games-choice-param="rock">Steen</button>
+              <button class="button is-link is-large mr-5" data-action="games#choose" data-games-choice-param="paper">Papier</button>
+              <button class="button is-link is-large" data-action="games#choose" data-games-choice-param="scissors">Schaar</button>
+            </div>
+
+            <div data-games-target="result" class="is-hidden">
+              <div>
+                <div>Jij koos:</div>
+                <span class="has-text-weight-bold" data-games-target="playerChoice"></span>
+              </div>
+
+              <div>
+                <div>Je tegenstander koos:</div>
+                <span class="has-text-weight-bold" data-games-target="opponentChoice"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

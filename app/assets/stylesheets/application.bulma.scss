@@ -1,0 +1,24 @@
+$card-radius: 1rem;
+@import 'bulma/bulma';
+@import 'animate.css/animate';
+
+html {
+  background-color: hsl(207, 60%, 90%);
+  overflow: auto;
+}
+
+.card.game {
+  min-height: 25rem;
+}
+
+.h-100 {
+  height: 100%;
+}
+
+.border {
+  border: 1px solid black;
+}
+
+.animate__animated.animate__bounce {
+  --animate-delay: 1s;
+}

@@ -1,0 +1,14 @@
+<div class="columns is-centered">
+  <div class="column is-6">
+    <div class="card">
+      <div class="card-content">
+        <div class="has-text-centered">
+          <h2 class="title is-1">Rock paper scissors</h2>
+          <%= form_with url: "/games" do |f| %>
+            <%= f.submit "Potje starten", class: "button is-info is-large" %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
