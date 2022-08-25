@@ -97,7 +97,11 @@ const Game = ({ channel, playerId }) => {
       setPlayer2Choice(data.choice);
     },
     GAME_FINISHED(data) {
-      setOpponentChoice(data.player1 === playerId ? data.player2_choice : data.player1_choice);
+      const isPlayer1 = data.player1 === playerId;
+      setOpponentChoice(isPlayer1 ? data.player2_choice : data.player1_choice);
+      setWins(isPlayer1 ? data.player1_wins : data.player2_wins);
+      setLosses(isPlayer1 ? data.player2_wins : data.player1_wins);
+      setTimeout(startCountdown, 2000);
     },
     RESTART() {
       setChoice(undefined);
@@ -112,18 +116,6 @@ const Game = ({ channel, playerId }) => {
       handler?.(data);
     };
   }, []);
-
-  useEffect(() => {
-    if (choice && opponentChoice) {
-      const result = getResult(choice, opponentChoice);
-      if (result === 'win') {
-        setWins((wins) => wins + 1);
-      } else if (result === 'loss') {
-        setLosses((losses) => losses + 1);
-      }
-      setTimeout(startCountdown, 2000);
-    }
-  }, [opponentChoice]);
 
   function choose(choice) {
     setChoice(choice);

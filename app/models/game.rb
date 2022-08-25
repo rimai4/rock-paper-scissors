@@ -11,6 +11,19 @@ class Game < ApplicationRecord
     player1.nil? && player2.nil?
   end
 
+  def update_score
+    return if player1_choice == player2_choice
+    if [
+      player1_choice == "rock" && player2_choice == "scissors",
+      player1_choice == "paper" && player2_choice == "rock",
+      player1_choice == "scissors" && player2_choice == "paper",
+    ].any?
+      increment(:player1_wins)
+    else
+      increment(:player2_wins)
+    end
+  end
+
   private
 
   def add_code

@@ -27,7 +27,12 @@ class GameChannel < ApplicationCable::Channel
     else
       game.update_attribute(:player2, @player_id)
     end
-    ActionCable.server.broadcast(game_channel, { event: "PLAYER_JOINED", full: game.full? })
+
+    ActionCable.server.broadcast(game_channel, {
+      event: "PLAYER_JOINED",
+      full: game.full?,
+      player_id: @player_id,
+    })
   end
 
   def choose(data)
@@ -40,12 +45,17 @@ class GameChannel < ApplicationCable::Channel
     end
 
     if game.player1_choice && game.player2_choice
+      game = game.update_score
+      game.save
+
       ActionCable.server.broadcast(game_channel, {
         event: "GAME_FINISHED",
         player1: game.player1,
         player2: game.player2,
         player1_choice: game.player1_choice,
         player2_choice: game.player2_choice,
+        player1_wins: game.player1_wins,
+        player2_wins: game.player2_wins,
       })
     end
   end
