@@ -56,10 +56,10 @@ function getResultText(result) {
 
 function Icon({ icon, onClick, resultClass = '' }) {
   const data = ICONS[icon];
-  const className = `fa-regular h-100 w-100 game-icon mb-3 mr-4 ${data.class} ${resultClass}`;
+  const className = `fa-regular h-100 w-100 game-icon mb-3 ${data.class} ${resultClass}`;
 
   return (
-    <div onClick={() => onClick?.()} className="image icon-container">
+    <div onClick={() => onClick?.()} className="image icon-container mx-3">
       <i className={className}></i>
       <div className="has-text-centered">{data.t}</div>
     </div>
