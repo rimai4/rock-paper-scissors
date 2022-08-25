@@ -1,6 +1,6 @@
 class GamesController < ApplicationController
   before_action :set_game, only: :show
-  before_action :check_game_full, only: :show
+  # before_action :check_game_full, only: :show
 
   def create
     game = Game.create!

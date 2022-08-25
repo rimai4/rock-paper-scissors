@@ -1,14 +1,8 @@
 $card-radius: 1rem;
 @import 'bulma/bulma';
-@import 'animate.css/animate';
 
-html {
-  background-color: hsl(207, 60%, 90%);
-  overflow: auto;
-}
-
-.card.game {
-  min-height: 25rem;
+.game-window {
+  height: 25rem;
 }
 
 .h-100 {
@@ -19,6 +13,29 @@ html {
   border: 1px solid black;
 }
 
-.animate__animated.animate__bounce {
-  --animate-delay: 1s;
+.border-green {
+  border: 1px solid green;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.choice-icon:hover {
+  color: $info;
+  cursor: pointer;
+}
+
+.win {
+  color: $success;
+  margin-right: 1.5rem;
+}
+
+.loss {
+  color: $danger;
+  margin-right: 1.5rem;
+}
+
+.result {
+  min-height: 3rem;
 }

@@ -1,19 +1,15 @@
 import consumer from './consumer';
 
-export function subscribe(params = {}) {
+export function subscribe({ game_id, player_id }) {
   const channel = consumer.subscriptions.create(
-    { channel: 'GameChannel', ...params },
+    { channel: 'GameChannel', game_id, player_id },
     {
       connected() {
         console.log('connected');
-        channel.perform('join', { player_id: params.player_id });
+        channel.perform('join', { player_id });
       },
 
       disconnected() {},
-
-      received(data) {
-        console.log('received data', data);
-      },
     },
   );
   return channel;
