@@ -56,7 +56,7 @@ function getResultText(result) {
 
 function Icon({ icon, onClick, resultClass = '' }) {
   const data = ICONS[icon];
-  const className = `fa-regular h-100 w-100 game-icon mb-3 ${data.class} ${resultClass}`;
+  const className = `fa-regular h-100 w-100 game-icon mb-3 mr-4 ${data.class} ${resultClass}`;
 
   return (
     <div onClick={() => onClick?.()} className="image icon-container">
@@ -166,7 +166,7 @@ const Game = ({ channel, playerId }) => {
 
         <Card>
           <div className="is-flex is-flex-direction-column is-justify-content-space-between is-align-items-center h-100">
-            <h5 className="title is-5">Wachten op je tegenstander....</h5>
+            <h5 className="title is-5 has-text-centered">Wachten op je tegenstander....</h5>
             <img src="/loading.gif" />
           </div>
         </Card>
