@@ -13,7 +13,12 @@ class GameChannel < ApplicationCable::Channel
     else
       game.update_attribute(:player2, nil)
     end
-    ActionCable.server.broadcast(game_channel, { event: "PLAYER_LEFT", player_id: @player_id })
+
+    ActionCable.server.broadcast(game_channel, {
+      event: "PLAYER_LEFT",
+      player1: game.player1,
+      player2: game.player2,
+    })
   end
 
   def receive(data)
@@ -21,17 +26,18 @@ class GameChannel < ApplicationCable::Channel
 
   def join
     game = Game.find_by!(code: game_id)
-    return if game.player1 == @player_id || game.player2 == @player_id
-    if game.player1.nil?
-      game.update_attribute(:player1, @player_id)
-    else
-      game.update_attribute(:player2, @player_id)
+    if game.player1 != @player_id || game.player2 != @player_id
+      if game.player1.nil?
+        game.update_attribute(:player1, @player_id)
+      else
+        game.update_attribute(:player2, @player_id)
+      end
     end
 
     ActionCable.server.broadcast(game_channel, {
       event: "PLAYER_JOINED",
-      full: game.full?,
-      player_id: @player_id,
+      player1: game.player1,
+      player2: game.player2,
     })
   end
 

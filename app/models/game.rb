@@ -12,7 +12,7 @@ class Game < ApplicationRecord
   end
 
   def update_score
-    return if player1_choice == player2_choice
+    return self if player1_choice == player2_choice
     if [
       player1_choice == "rock" && player2_choice == "scissors",
       player1_choice == "paper" && player2_choice == "rock",

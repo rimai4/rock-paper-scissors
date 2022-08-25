@@ -68,7 +68,8 @@ function Icon({ icon, onClick, resultClass = '' }) {
 
 const Game = ({ channel, playerId }) => {
   const [copyButtonText, setCopyButtonText] = useState('Kopieer link');
-  const [full, setFull] = useState(false);
+  const [player1, setPlayer1] = useState(undefined);
+  const [player2, setPlayer2] = useState(undefined);
   const [choice, setChoice] = useState(undefined);
   const [opponentChoice, setOpponentChoice] = useState(undefined);
   const [wins, setWins] = useState(0);
@@ -85,16 +86,12 @@ const Game = ({ channel, playerId }) => {
 
   const handlers = {
     PLAYER_JOINED(data) {
-      setFull(data.full);
+      setPlayer1(data.player1);
+      setPlayer2(data.player2);
     },
-    PLAYER_LEFT() {
-      setFull(false);
-    },
-    PLAYER1_CHOICE(data) {
-      setPlayer1Choice(data.choice);
-    },
-    PLAYER2_CHOICE(data) {
-      setPlayer2Choice(data.choice);
+    PLAYER_LEFT(data) {
+      setPlayer1(data.player1);
+      setPlayer2(data.player2);
     },
     GAME_FINISHED(data) {
       const isPlayer1 = data.player1 === playerId;
@@ -140,7 +137,7 @@ const Game = ({ channel, playerId }) => {
     );
   }
 
-  if (!full) {
+  if (!player1 || !player2) {
     return (
       <>
         <div className="columns is-centered">
