@@ -7,17 +7,12 @@ class Game < ApplicationRecord
     player_count == 2
   end
 
-  def empty?
+  def has_no_players?
     player_count == 0
   end
 
   def player_count
-    if player1.nil? && player2.nil?
-      return 0
-    elsif player1.present? && player2.present?
-      return 2
-    end
-    1
+    [player1, player2].map(&:present?).count
   end
 
   def finished?
@@ -33,16 +28,20 @@ class Game < ApplicationRecord
     end
   end
 
-  def update_score
-    return self if player1_choice == player2_choice
-    if [
+  def player1_won?
+    [
       player1_choice == "rock" && player2_choice == "scissors",
       player1_choice == "paper" && player2_choice == "rock",
       player1_choice == "scissors" && player2_choice == "paper",
     ].any?
-      increment(:player1_wins)
+  end
+
+  def update_score
+    return if player1_choice == player2_choice
+    if player1_won?
+      increment!(:player1_wins)
     else
-      increment(:player2_wins)
+      increment!(:player2_wins)
     end
   end
 

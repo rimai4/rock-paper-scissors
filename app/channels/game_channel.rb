@@ -8,7 +8,7 @@ class GameChannel < ApplicationCable::Channel
     p "unsubscribed, removing player #{@player_id}"
     game = Game.find_by!(code: game_id)
     game.remove_player(@player_id)
-    if game.empty?
+    if game.has_no_players?
       game.reset_wins
     end
 
@@ -41,7 +41,6 @@ class GameChannel < ApplicationCable::Channel
 
     if game.finished?
       game = game.update_score
-      game.save
 
       ActionCable.server.broadcast(game_channel, {
         event: "GAME_FINISHED",
