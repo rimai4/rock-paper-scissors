@@ -40,7 +40,7 @@ class GameChannel < ApplicationCable::Channel
     game.update_choice(@player_id, data["choice"])
 
     if game.finished?
-      game = game.update_score
+      game.update_score
 
       ActionCable.server.broadcast(game_channel, {
         event: "GAME_FINISHED",
