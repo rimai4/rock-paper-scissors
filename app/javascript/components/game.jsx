@@ -88,6 +88,9 @@ const Game = ({ channel, playerId }) => {
     PLAYER_JOINED(data) {
       setPlayer1(data.player1);
       setPlayer2(data.player2);
+      const isPlayer1 = data.player1 === playerId;
+      setWins(isPlayer1 ? data.player1_wins : data.player2_wins);
+      setLosses(isPlayer1 ? data.player2_wins : data.player1_wins);
     },
     PLAYER_LEFT(data) {
       setPlayer1(data.player1);

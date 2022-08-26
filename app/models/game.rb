@@ -4,11 +4,33 @@ class Game < ApplicationRecord
   before_create :add_code
 
   def full?
-    player1.present? && player2.present?
+    player_count == 2
   end
 
   def empty?
-    player1.nil? && player2.nil?
+    player_count == 0
+  end
+
+  def player_count
+    if player1.nil? && player2.nil?
+      return 0
+    elsif player1.present? && player2.present?
+      return 2
+    end
+    1
+  end
+
+  def finished?
+    player1_choice.present? && player2_choice.present?
+  end
+
+  def add_player(player_id)
+    return if player1 == player_id || player2 == player_id
+    if player1.nil?
+      update_attribute(:player1, player_id)
+    else
+      update_attribute(:player2, player_id)
+    end
   end
 
   def update_score
@@ -21,6 +43,30 @@ class Game < ApplicationRecord
       increment(:player1_wins)
     else
       increment(:player2_wins)
+    end
+  end
+
+  def reset_choices
+    update(player1_choice: nil, player2_choice: nil)
+  end
+
+  def reset_wins
+    self.update(player1_wins: 0, player2_wins: 0)
+  end
+
+  def remove_player(player_id)
+    if player1 == player_id
+      update_attribute(:player1, nil)
+    else
+      update_attribute(:player2, nil)
+    end
+  end
+
+  def update_choice(player_id, choice)
+    if player1 == player_id
+      update_attribute(:player1_choice, choice)
+    else
+      update_attribute(:player2_choice, choice)
     end
   end
 

@@ -1,17 +1,15 @@
 class GameChannel < ApplicationCable::Channel
   def subscribed
-    @player_id = player_id
+    @player_id = params[:player_id]
     stream_from game_channel
   end
 
   def unsubscribed
     p "unsubscribed, removing player #{@player_id}"
     game = Game.find_by!(code: game_id)
-    game.update(player1_choice: nil, player2_choice: nil)
-    if game.player1 == @player_id
-      game.update_attribute(:player1, nil)
-    else
-      game.update_attribute(:player2, nil)
+    game.remove_player(@player_id)
+    if game.empty?
+      game.reset_wins
     end
 
     ActionCable.server.broadcast(game_channel, {
@@ -26,31 +24,22 @@ class GameChannel < ApplicationCable::Channel
 
   def join
     game = Game.find_by!(code: game_id)
-    if game.player1 != @player_id || game.player2 != @player_id
-      if game.player1.nil?
-        game.update_attribute(:player1, @player_id)
-      else
-        game.update_attribute(:player2, @player_id)
-      end
-    end
+    game.add_player(@player_id)
 
     ActionCable.server.broadcast(game_channel, {
       event: "PLAYER_JOINED",
       player1: game.player1,
       player2: game.player2,
+      player1_wins: game.player1_wins,
+      player2_wins: game.player2_wins,
     })
   end
 
   def choose(data)
     game = Game.find_by!(code: game_id)
-    choice = data["choice"]
-    if game.player1 == @player_id
-      game.update_attribute(:player1_choice, choice)
-    else
-      game.update_attribute(:player2_choice, choice)
-    end
+    game.update_choice(@player_id, data["choice"])
 
-    if game.player1_choice && game.player2_choice
+    if game.finished?
       game = game.update_score
       game.save
 
@@ -80,9 +69,5 @@ class GameChannel < ApplicationCable::Channel
 
   def game_id
     params[:game_id]
-  end
-
-  def player_id
-    params[:player_id]
   end
 end
