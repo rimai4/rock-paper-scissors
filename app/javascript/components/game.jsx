@@ -122,15 +122,17 @@ const Game = ({ channel, playerId }) => {
     channel.perform('choose', { choice });
   }
 
-  function Card({ children }) {
+  function Card({ children, showScore = true }) {
     return (
       <div className="columns is-centered">
         <div className="column is-6">
-          <div className="is-flex is-justify-content-center mb-3">
-            <h3 className="title is-3">
-              {wins} - {losses}
-            </h3>
-          </div>
+          {showScore && (
+            <div className="is-flex is-justify-content-center mb-3">
+              <h3 className="title is-3">
+                {wins} - {losses}
+              </h3>
+            </div>
+          )}
 
           <div className="card game-window">
             <div className="card-content h-100">{children}</div>
@@ -156,7 +158,7 @@ const Game = ({ channel, playerId }) => {
           </div>
         </div>
 
-        <Card>
+        <Card showScore={false}>
           <div className="is-flex is-flex-direction-column is-justify-content-space-between is-align-items-center h-100">
             <h5 className="title is-5 has-text-centered">Wachten op je tegenstander....</h5>
             <img src="/loading.gif" />
