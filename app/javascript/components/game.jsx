@@ -101,7 +101,7 @@ const Game = ({ channel, playerId }) => {
       setOpponentChoice(isPlayer1 ? data.player2_choice : data.player1_choice);
       setWins(isPlayer1 ? data.player1_wins : data.player2_wins);
       setLosses(isPlayer1 ? data.player2_wins : data.player1_wins);
-      setTimeout(startCountdown, 2000);
+      setTimeout(startCountdown, 1000);
     },
     RESTART() {
       setChoice(undefined);

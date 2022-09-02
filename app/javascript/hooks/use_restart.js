@@ -13,7 +13,7 @@ export function useRestartCountdown(channel) {
   }, [secondsLeft]);
 
   function startCountdown() {
-    setSecondsLeft(5);
+    setSecondsLeft(2);
     const interval = setInterval(() => {
       setSecondsLeft((prev) => prev - 1);
     }, 1000);
