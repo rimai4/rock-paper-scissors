@@ -12,7 +12,7 @@ class Game < ApplicationRecord
   end
 
   def player_count
-    [player1, player2].map(&:present?).count
+    [player1, player2].filter(&:present?).count
   end
 
   def finished?
@@ -74,7 +74,7 @@ class Game < ApplicationRecord
   def add_code
     code = nil
     loop do
-      code = SecureRandom.hex[0..7]
+      code = SecureRandom.hex[0..3]
       exists = Game.exists?(code: code)
       break unless exists
     end

@@ -8,6 +8,7 @@ class GameChannel < ApplicationCable::Channel
     p "unsubscribed, removing player #{@player_id}"
     game = Game.find_by!(code: game_id)
     game.remove_player(@player_id)
+
     if game.has_no_players?
       game.reset_wins
     end
