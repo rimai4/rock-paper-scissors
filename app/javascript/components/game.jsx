@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { useRestartCountdown } from '../hooks/use_restart';
 
 const ICONS = {
   rock: {
@@ -43,6 +42,17 @@ function getResultClasses(result) {
   }
 }
 
+function getResultTextClass(result) {
+  switch (result) {
+    case 'win':
+      return 'has-text-success';
+    case 'loss':
+      return 'has-text-danger';
+    default:
+      return '';
+  }
+}
+
 function getResultText(result) {
   switch (result) {
     case 'win':
@@ -74,7 +84,6 @@ const Game = ({ channel, playerId }) => {
   const [opponentChoice, setOpponentChoice] = useState(undefined);
   const [wins, setWins] = useState(0);
   const [losses, setLosses] = useState(0);
-  const { secondsLeft, startCountdown } = useRestartCountdown(channel);
 
   function copyLink() {
     navigator.clipboard.writeText(window.location.href);
@@ -101,7 +110,7 @@ const Game = ({ channel, playerId }) => {
       setOpponentChoice(isPlayer1 ? data.player2_choice : data.player1_choice);
       setWins(isPlayer1 ? data.player1_wins : data.player2_wins);
       setLosses(isPlayer1 ? data.player2_wins : data.player1_wins);
-      setTimeout(startCountdown, 1000);
+      setTimeout(restart, 2500);
     },
     RESTART() {
       setChoice(undefined);
@@ -120,6 +129,10 @@ const Game = ({ channel, playerId }) => {
   function choose(choice) {
     setChoice(choice);
     channel.perform('choose', { choice });
+  }
+
+  function restart() {
+    channel.perform('restart');
   }
 
   function Card({ children, showScore = true }) {
@@ -193,12 +206,13 @@ const Game = ({ channel, playerId }) => {
   const result = getResult(choice, opponentChoice);
   const [resultClass, opponentResultClass] = getResultClasses(result);
   const resultText = getResultText(result);
+  const resultTextClass = getResultTextClass(result);
 
   return (
     <Card>
       <div className="is-flex is-flex-direction-column is-justify-content-space-between is-align-items-center h-100">
         <div className="has-text-centered result">
-          <h5 className="title is-5">{resultText}</h5>
+          <h5 className={`title is-5 ${resultTextClass}`}>{resultText}</h5>
         </div>
 
         <div className="is-flex">
@@ -206,13 +220,7 @@ const Game = ({ channel, playerId }) => {
           <Icon icon={opponentChoice} resultClass={opponentResultClass} />
         </div>
 
-        <div className="result has-text-centered">
-          {secondsLeft && (
-            <p className="subtitle">
-              Volgende potje start in <strong>{secondsLeft}</strong>
-            </p>
-          )}
-        </div>
+        <div />
       </div>
     </Card>
   );

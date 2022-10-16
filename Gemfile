@@ -11,7 +11,6 @@ gem "jsbundling-rails"
 gem "turbo-rails"
 gem "stimulus-rails"
 gem "cssbundling-rails"
-gem "kredis"
 gem "redis", "~> 4.0"
 gem "bootsnap", require: false
 
